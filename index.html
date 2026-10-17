@@ -2074,9 +2074,14 @@ const giftMessages = [
 ];
 
 function startGiftFalling() {
-  giftImgInterval  = setInterval(createGiftImg, 1000);
-  giftMsgInterval  = setInterval(createGiftMsg, 1500);
-  createGiftImg(); createGiftMsg();
+  // Delay ngẫu nhiên ban đầu để tránh rơi cùng lúc
+  giftImgInterval = setInterval(createGiftImg, 2200);
+  giftMsgInterval = setInterval(createGiftMsg, 3000);
+  // Bắt đầu lần lượt, không cùng lúc
+  setTimeout(createGiftImg, 300);
+  setTimeout(createGiftMsg, 1500);
+  setTimeout(createGiftImg, 1100);
+  setTimeout(createGiftMsg, 2700);
 }
 
 function stopGiftFalling() {
