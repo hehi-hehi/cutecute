@@ -555,7 +555,22 @@
 
 /* ── FLOWERS ── */
 .flowers { position:relative; transform:scale(0.9); }
-@media(max-width:600px){ .flowers{transform:scale(0.48);transform-origin:bottom center;} }
+@media(max-width:600px){
+  .flowers{transform:scale(0.48);transform-origin:bottom center;}
+  /* Tắt filter:blur trên mobile – nặng GPU */
+  .flower__leafs::after{filter:none!important;}
+  .flower__grass__overlay{filter:none!important;}
+  .flower__g-right--2 .leaf{filter:none!important;}
+  .flower__g-right--4 .leaf{filter:none!important;}
+  .long-g--6{filter:none!important;}
+  .long-g--7{filter:none!important;}
+  /* Tắt animation cỏ phụ trên mobile */
+  .flower__g-long{animation:none!important;}
+  .flower__g-fr{animation:none!important;}
+  .flower__g-front{animation:none!important;}
+  /* will-change cho các element đang animate chính */
+  .flower--1,.flower--2,.flower--3{will-change:transform;}
+}
 @media(max-height:500px){ .flowers{transform:scale(0.5);} }
 
 .flower { position:absolute; bottom:10vmin; transform-origin:bottom center; z-index:10; --fl-speed:0.3s; }
@@ -2252,6 +2267,19 @@ function createGiftMsg() {
     giftImgInterval = setInterval(createGiftImg, 1000);
   });
 })();
+
+/* Dừng animation khi tab ẩn, phục hồi khi hiện lại – tiết kiệm CPU/GPU */
+document.addEventListener('visibilitychange', () => {
+  const flowers = document.querySelector('.flowers');
+  if (!flowers) return;
+  if (document.hidden) {
+    flowers.style.animationPlayState = 'paused';
+    flowers.querySelectorAll('*').forEach(el => el.style.animationPlayState = 'paused');
+  } else {
+    flowers.style.animationPlayState = '';
+    flowers.querySelectorAll('*').forEach(el => el.style.animationPlayState = '');
+  }
+});
 </script>
 </body>
 </html>
