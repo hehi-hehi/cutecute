@@ -1607,7 +1607,7 @@ function checkPin() {
   function drawPetal(x,y,r,angle,color,alpha){
     ctx.save(); ctx.globalAlpha=alpha;
     ctx.translate(x,y); ctx.rotate(angle);
-    ctx.shadowColor=color; ctx.shadowBlur=10;
+    ctx.shadowColor=color; ctx.shadowBlur=isMobile?0:10;
     ctx.beginPath(); ctx.ellipse(0,0,r*.45,r,0,0,Math.PI*2);
     ctx.fillStyle=color; ctx.fill();
     ctx.globalAlpha=alpha*.45;
@@ -1615,7 +1615,8 @@ function checkPin() {
     ctx.fillStyle='#fff'; ctx.fill();
     ctx.restore();
   }
-  const N=Math.min(50, Math.floor(innerWidth/16));
+  const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || innerWidth < 768;
+  const N=Math.min(isMobile?18:50, Math.floor(innerWidth/16));
   function rp(init){
     const r=4+Math.random()*6;
     return{
@@ -1724,9 +1725,9 @@ function backToLock() {
     ctx.save();
     ctx.globalAlpha = alpha;
     ctx.translate(x,y); ctx.rotate(angle);
-    /* bóng mờ nổi bật */
+    /* bóng mờ nổi bật – tắt trên mobile */
     ctx.shadowColor = color;
-    ctx.shadowBlur  = 12;
+    ctx.shadowBlur  = isMobile2 ? 0 : 12;
     /* thân cánh */
     ctx.beginPath();
     ctx.ellipse(0, 0, r*0.45, r, 0, 0, Math.PI*2);
@@ -1741,7 +1742,8 @@ function backToLock() {
     ctx.restore();
   }
 
-  const N = Math.min(55, Math.floor(innerWidth / 18));
+  const isMobile2 = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || innerWidth < 768;
+  const N = Math.min(isMobile2?20:55, Math.floor(innerWidth / 18));
 
   function rp(init){
     const r = 4 + Math.random() * 6;   /* nhỏ lại: 4-10px */
@@ -1791,7 +1793,7 @@ function backToLock() {
   function drawStar(x,y,r,alpha,color){
     ctx.save(); ctx.globalAlpha=alpha;
     ctx.translate(x,y);
-    ctx.shadowColor=color; ctx.shadowBlur=8;
+    ctx.shadowColor=color; ctx.shadowBlur=isMobile3?0:8;
     ctx.fillStyle=color;
     ctx.beginPath();
     for(let i=0;i<5;i++){
@@ -1806,7 +1808,8 @@ function backToLock() {
 
   /* Cac hat sao roi nhe */
   const STAR_COLORS=['#ffffff','#ffe8a1','#ffd6ff','#b3e5ff','#ffb3d1','#d4aaff'];
-  const N=Math.min(60,Math.floor(innerWidth/14));
+  const isMobile3 = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || innerWidth < 768;
+  const N=Math.min(isMobile3?20:60,Math.floor(innerWidth/14));
   function rs(init){
     const r=2+Math.random()*5;
     return{
@@ -1824,7 +1827,7 @@ function backToLock() {
 
   /* Sao nen bat sanh: co dinh nhieu sao nho */
   const BG=[];
-  for(let i=0;i<120;i++){
+  for(let i=0;i<(isMobile3?40:120);i++){
     BG.push({
       x:Math.random()*2000, y:Math.random()*900,
       r:.8+Math.random()*2,
