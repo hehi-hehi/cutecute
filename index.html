@@ -796,7 +796,7 @@
 /* LETTER OVERLAY */
 #letterOverlay{position:fixed;inset:0;z-index:1500;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:opacity .5s,visibility .5s}
 #letterOverlay.open{opacity:1;visibility:visible}
-.letter-box{background:linear-gradient(160deg,#fdf8ec 0%,#fef5e0 55%,#faebd7 100%);border:2px solid rgba(200,155,80,.5);border-radius:20px;box-shadow:0 16px 60px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.9);padding:clamp(22px,6vw,42px) clamp(20px,6vw,44px);max-width:600px;width:100%;text-align:center;position:relative;transform:scale(.85) translateY(30px);transition:transform .5s cubic-bezier(.22,1,.36,1);max-height:88vh;overflow-y:auto}
+.letter-box{background:linear-gradient(160deg,#fdf8ec 0%,#fef5e0 55%,#faebd7 100%);border:2px solid rgba(200,155,80,.5);border-radius:20px;box-shadow:0 16px 60px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.9);padding:clamp(22px,6vw,42px) clamp(20px,6vw,44px);max-width:600px;width:100%;text-align:center;position:relative;transform:scale(.85) translateY(30px);transition:transform .5s cubic-bezier(.22,1,.36,1);max-height:calc(100vh - 160px);overflow-y:auto;padding-bottom:clamp(100px,18vw,140px)}
 #letterOverlay.open .letter-box{transform:scale(1) translateY(0)}
 .letter-box::before{content:'*';position:absolute;top:11px;left:14px;font-size:17px;color:rgba(180,110,50,.4)}
 .letter-box::after{content:'*';position:absolute;top:11px;right:14px;font-size:17px;color:rgba(180,110,50,.4)}
