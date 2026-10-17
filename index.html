@@ -557,8 +557,7 @@
 .flowers { position:relative; transform:scale(0.9); }
 @media(max-width:600px){
   .flowers{transform:scale(0.48);transform-origin:bottom center;}
-  /* Tắt filter:blur trên mobile – nặng GPU */
-  .flower__leafs::after{filter:none!important;}
+  /* Chỉ tắt blur ít quan trọng, giữ lại glow cánh hoa */
   .flower__grass__overlay{filter:none!important;}
   .flower__g-right--2 .leaf{filter:none!important;}
   .flower__g-right--4 .leaf{filter:none!important;}
