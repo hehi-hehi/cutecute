@@ -153,8 +153,10 @@
     }
     #intro.hide { opacity: 0; visibility: hidden; pointer-events: none; }
 
-    /* canvas hoa roi tren intro */
+    /* canvas hoa roi tren intro – ẩn, chỉ giữ tym */
     #intro-canvas {
+      display: none !important;
+    }
       position: absolute; inset: 0;
       pointer-events: none; z-index: 0;
     }
@@ -2169,7 +2171,7 @@ function createGiftMsg() {
   window.addEventListener('resize', resize);
 
   // Các loại bông hoa emoji
-  const petals = ['🌸','🌺','🌷','💮','🌼','🩷','💗'];
+  const petals = ['💗','💕','💖','�','❤️','🩷','�'];
 
   class Petal {
     constructor() { this.reset(true); }
