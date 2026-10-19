@@ -1601,6 +1601,8 @@ function checkPin() {
   if (pinValue === CORRECT_PIN) {
     /* Dung – ẩn lock, hiện intro, hiện player, tự phát nhạc */
     lockScreen.classList.add('hide');
+    if(window._stopLockCanvas) window._stopLockCanvas();   /* dừng canvas lock */
+    if(window._startIntroCanvas) window._startIntroCanvas(); /* bật canvas intro */
     document.getElementById('intro').classList.remove('hide');
     document.getElementById('btnBack').classList.remove('visible');
     showPlayer();
@@ -1656,6 +1658,7 @@ function checkPin() {
     };
   }
   const petals=Array.from({length:N},()=>rp(true));
+  let rafLock = null;
   function animLock(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     petals.forEach(p=>{
@@ -1665,9 +1668,12 @@ function checkPin() {
       if(p.y>canvas.height+20) Object.assign(p,rp(false));
       drawPetal(p.x,p.y,p.r,p.angle,p.color,p.alpha);
     });
-    requestAnimationFrame(animLock);
+    rafLock = requestAnimationFrame(animLock);
   }
   animLock();
+  /* Export để dừng/bật từ ngoài */
+  window._stopLockCanvas  = ()=>{ cancelAnimationFrame(rafLock); rafLock=null; };
+  window._startLockCanvas = ()=>{ if(!rafLock) animLock(); };
 })();
 
 /* ══════════════════════════════
@@ -1678,17 +1684,21 @@ const btnBack  = document.getElementById('btnBack');
 
 function openCard() {
   introEl.classList.add('hide');
+  if(window._stopIntroCanvas) window._stopIntroCanvas();  /* dừng canvas intro */
   btnBack.classList.add('visible');
   showPlayer();
 }
 function backToIntro() {
   introEl.classList.remove('hide');
+  if(window._startIntroCanvas) window._startIntroCanvas(); /* bật lại canvas intro */
   btnBack.classList.remove('visible');
   showPlayer();
 }
 function backToLock() {
   /* Ẩn intro, hiện lại lock */
   introEl.classList.add('hide');
+  if(window._stopIntroCanvas)  window._stopIntroCanvas();  /* dừng canvas intro */
+  if(window._startLockCanvas)  window._startLockCanvas();  /* bật lại canvas lock */
   lockScreen.classList.remove('hide');
   /* Reset lại nút quay lại (intro → card) */
   btnBack.classList.remove('visible');
@@ -1786,7 +1796,7 @@ function backToLock() {
   }
 
   const petals = Array.from({ length: N }, () => rp(true));
-
+  let rafIntro = null;
   function animIntro(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     petals.forEach(p => {
@@ -1797,9 +1807,11 @@ function backToLock() {
       if(p.y > canvas.height + 30) Object.assign(p, rp(false));
       drawPetal(p.x, p.y, p.r, p.angle, p.color, p.alpha);
     });
-    requestAnimationFrame(animIntro);
+    rafIntro = requestAnimationFrame(animIntro);
   }
   animIntro();
+  window._stopIntroCanvas  = ()=>{ cancelAnimationFrame(rafIntro); rafIntro=null; };
+  window._startIntroCanvas = ()=>{ if(!rafIntro) animIntro(); };
 })();
 
 /* ══════════════════════════════
@@ -2104,6 +2116,8 @@ function stopGiftFalling() {
 }
 
 function createGiftImg() {
+  /* Giới hạn tối đa 3 ảnh trên màn hình cùng lúc */
+  if(document.querySelectorAll('.gift-img').length >= 3) return;
   const img = document.createElement('img');
   const names = [
     'hoa1.jpg','hoa2.jpg','hoa3.jpg','hoa4.jpg','hoa5.jpg',
