@@ -1872,23 +1872,26 @@ function backToLock() {
     });
   }
 
-  function animate(){
+  const isMobileStar = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || innerWidth < 768;
+  const FPS_INTERVAL = isMobileStar ? 1000/30 : 0;
+  let lastTime = 0;
+  function animate(now){
+    requestAnimationFrame(animate);
+    if(isMobileStar && now - lastTime < FPS_INTERVAL) return;
+    lastTime = now;
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    /* sao nen nhap nhay */
     BG.forEach(s=>{
       s.t+=s.ts;
       drawStar(s.x % canvas.width, s.y % canvas.height, s.r, s.alpha*(0.5+0.5*Math.sin(s.t)), s.color);
     });
-    /* sao roi */
     stars.forEach(s=>{
       s.twinkle+=s.twinkleSpeed;
       s.x+=s.wind; s.y+=s.speed;
       if(s.y>canvas.height+10) Object.assign(s,rs(false));
       drawStar(s.x,s.y,s.r,s.alpha*(0.6+0.4*Math.sin(s.twinkle)),s.color);
     });
-    requestAnimationFrame(animate);
   }
-  animate();
+  animate(0);
 })();
 
 /* ══════════════════════════════
